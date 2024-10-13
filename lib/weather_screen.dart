@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/additional_info.dart';
+import 'package:weather_app/hourly_forecast.dart';
 
 class WeatherSreen extends StatefulWidget {
   const WeatherSreen({super.key});
@@ -27,7 +29,7 @@ class _WeatherSreenState extends State<WeatherSreen> {
       //   isLoader= true;
       // });
       final res = await http.get(Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=London,uk&APPID=1abdbcd080ce7e49f1229c3ab22adb63'));
+          'https://api.openweathermap.org/data/2.5/forecast?q=Bengaluru,in&APPID=1abdbcd080ce7e49f1229c3ab22adb63'));
 
       final data = json.decode(res.body);
 
@@ -167,7 +169,7 @@ class _WeatherSreenState extends State<WeatherSreen> {
                   //   child: Row(
                   //     children: [
                   //       for (int i = 0; i < 5; i++)
-                  //         WeatherFrcstCard(
+                  //         HourlyForcasteCard(
                   //             temp: data['list'][i + 1]['main']['temp']
                   //                 .toString(),
                   //             time: data['list'][i + 1]['dt'].toString(),
@@ -189,7 +191,7 @@ class _WeatherSreenState extends State<WeatherSreen> {
                         itemBuilder: (context, index) {
                           final time = DateTime.parse(
                               data['list'][index + 1]['dt_txt'].toString());
-                          return WeatherFrcstCard(
+                          return HourlyForcasteCard(
                               temp: data['list'][index + 1]['main']['temp']
                                   .toString(),
                               time: DateFormat.jm().format(time),
@@ -233,80 +235,6 @@ class _WeatherSreenState extends State<WeatherSreen> {
               ),
             );
           }),
-    );
-  }
-}
-
-class AdditionalInf extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-
-  const AdditionalInf(
-      {super.key,
-      required this.icon,
-      required this.label,
-      required this.value});
- 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(13.0),
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            size: 30.00,
-          ),
-          const SizedBox(
-            height: 6.0,
-          ),
-          Text(label, style: const TextStyle(fontSize: 17.0)),
-          const SizedBox(
-            height: 2.0,
-          ),
-          Text(value,
-              style:
-                  const TextStyle(fontSize: 17.0, fontWeight: FontWeight.w600)),
-        ],
-      ),
-    );
-  }
-}
-
-class WeatherFrcstCard extends StatelessWidget {
-  final String time;
-  final String temp;
-  final IconData icon;
-  const WeatherFrcstCard(
-      {super.key, required this.temp, required this.time, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 10.0,
-      child: Padding(
-        padding: const EdgeInsets.only(
-            bottom: 15.0, top: 15.0, left: 25.0, right: 25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(time,
-                style: const TextStyle(
-                    fontSize: 17.0, fontWeight: FontWeight.w500)),
-            // const SizedBox(
-            //   height: 5.0,
-            // ),
-            Icon(icon, size: 35.0),
-            // const SizedBox(
-            //   height: 5.0,
-            // ),
-            Text(temp,
-                style: const TextStyle(
-                    fontSize: 15.0, fontWeight: FontWeight.w500)),
-          ],
-        ),
-      ),
     );
   }
 }
